@@ -26,12 +26,6 @@ class NoteController extends Controller
 
     }
 
-    public function setBookmark($id, Request $request)
-    {
-        $Note = Note::findOrFail($id);
-        $Note->update($request->all());
-        return response()->json($Note, 200);
-    }
 
     public function bookmarks()
     {
