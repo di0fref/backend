@@ -18,7 +18,7 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->group(['prefix' => 'api'], function () use ($router) {
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
 
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
@@ -31,8 +31,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('notes/{id}', ['uses' => 'NoteController@showOneNote']);
     $router->post('notes', ['uses' => 'NoteController@create']);
     $router->delete('notes/{id}', ['uses' => 'NoteController@delete']);
-    $router->put('notes/update/{id}', ['uses' => 'NoteController@update']);
-
+    $router->put('notes/{id}', ['uses' => 'NoteController@update']);
 
 
     $router->get('folders', ['uses' => 'FolderController@showAllFolders']);
@@ -44,7 +43,6 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     /* Special */
     $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
     $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
-
     /* And Special */
 
 
