@@ -20,17 +20,35 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'api'], function () use ($router) {
 
+    /* Special */
+    $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
+    $router->get('notes/folder/{id}', ['uses' => 'NoteController@folder']);
+    $router->get('notes/trash', ['uses' => 'NoteController@getTrash']);
+    $router->put('notes/bookmark/{id}', ['uses' => 'NoteController@setBookmark']);
+
+    /* End Special*/
+
+
     $router->get('notes', ['uses' => 'NoteController@showAllNotes']);
     $router->get('notes/{id}', ['uses' => 'NoteController@showOneNote']);
     $router->post('notes', ['uses' => 'NoteController@create']);
     $router->delete('notes/{id}', ['uses' => 'NoteController@delete']);
     $router->put('notes/{id}', ['uses' => 'NoteController@update']);
 
+
+
     $router->get('folders', ['uses' => 'FolderController@showAllFolders']);
     $router->get('folders/{id}', ['uses' => 'FolderController@showOneFolder']);
     $router->post('folders', ['uses' => 'FolderController@create']);
     $router->delete('folders/{id}', ['uses' => 'FolderController@delete']);
     $router->put('folders/{id}', ['uses' => 'FolderController@update']);
+
+    /* Special */
+    $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
+    $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
+
+    /* And Special */
+
 
     $router->get('recents', ['uses' => 'RecentController@showAllRecents']);
     $router->get('recents/{id}', ['uses' => 'RecentController@showOneRecent']);
