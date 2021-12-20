@@ -16,3 +16,25 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+
+$router->group(['prefix' => 'api'], function () use ($router) {
+
+    $router->get('notes', ['uses' => 'NoteController@showAllNotes']);
+    $router->get('notes/{id}', ['uses' => 'NoteController@showOneNote']);
+    $router->post('notes', ['uses' => 'NoteController@create']);
+    $router->delete('notes/{id}', ['uses' => 'NoteController@delete']);
+    $router->put('notes/{id}', ['uses' => 'NoteController@update']);
+
+    $router->get('folders', ['uses' => 'FolderController@showAllFolders']);
+    $router->get('folders/{id}', ['uses' => 'FolderController@showOneFolder']);
+    $router->post('folders', ['uses' => 'FolderController@create']);
+    $router->delete('folders/{id}', ['uses' => 'FolderController@delete']);
+    $router->put('folders/{id}', ['uses' => 'FolderController@update']);
+
+    $router->get('recents', ['uses' => 'RecentController@showAllRecents']);
+    $router->get('recents/{id}', ['uses' => 'RecentController@showOneRecent']);
+    $router->post('recents', ['uses' => 'RecentController@create']);
+    $router->delete('recents/{id}', ['uses' => 'RecentController@delete']);
+    $router->put('recents/{id}', ['uses' => 'RecentController@update']);
+});
