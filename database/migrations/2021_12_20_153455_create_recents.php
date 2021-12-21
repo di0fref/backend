@@ -15,8 +15,6 @@ class CreateRecents extends Migration
     {
         Schema::create('recents', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('date');
-            $table->string('name');
             $table->timestamps();
         });
     }

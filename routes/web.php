@@ -18,7 +18,8 @@ $router->get('/', function () use ($router) {
 });
 
 
-$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
+//$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
+$router->group(['prefix' => 'api'], function () use ($router) {
 
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
