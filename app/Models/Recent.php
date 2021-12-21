@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Recent extends Model
 {
     protected $fillable = [
-        'name',
-        'name',
-        'date',
+        'id',
+        'note_id'
     ];
 }

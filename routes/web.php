@@ -25,7 +25,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
     $router->get('notes/folder/{id}', ['uses' => 'NoteController@folder']);
     $router->get('notes/trash', ['uses' => 'NoteController@getTrash']);
-    /* End Special*/
+    /* End Special */
 
 
     $router->get('notes', ['uses' => 'NoteController@showAllNotes']);

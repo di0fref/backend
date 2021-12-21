@@ -11,7 +11,12 @@ class NoteController extends Controller
 {
     public function showAllNotes()
     {
-        return response()->json(Note::all());
+        return response()->json(
+
+            DB::table("notes")
+                ->where("deleted", 0)
+                ->get()
+        );
     }
 
 
@@ -21,6 +26,7 @@ class NoteController extends Controller
 
             DB::table("notes")
                 ->where("deleted", 1)
+                ->orderBy("name")
                 ->get()
         );
 
@@ -35,6 +41,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("bookmark", 1)
                 ->where("deleted", 0)
+                ->orderBy("name")
                 ->get()
         );
 
@@ -42,11 +49,12 @@ class NoteController extends Controller
 
     function folder($id)
     {
-        $notes = DB::table("notes")
-            ->where("folder_id", $id)
-            ->where("deleted", 0)
-            ->get(["*", "name as label", DB::raw("concat('note') as type")]);
-        return response()->json($notes, 200);
+        return response()->json(
+            DB::table("notes")
+                ->where("folder_id", $id)
+                ->where("deleted", 0)
+                ->get(["*", "name as label", DB::raw("concat('note') as type")])
+        );
     }
 
     public function showOneNote($id)

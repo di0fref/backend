@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Recent;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class RecentController extends Controller
 {
     public function showAllRecents()
     {
-        return response()->json(Recent::all());
+        return response()->json(
+            DB::table("recents")
+                ->join("notes", "notes.id" ,"=", "recents.note_id")->get()
+        );
     }
 
     public function showOneRecent($id)
@@ -20,16 +24,22 @@ class RecentController extends Controller
 
     public function create(Request $request)
     {
-        $Recent = Recent::create($request->all());
+        response()->json(
+            DB::table("recents")->upsert(
+                [
+                    "note_id" => $request->id,
+                    "updated_at" => Carbon::now()
+                ],
+                ["note_id"], ["updated_at" => Carbon::now()]
+            ));
 
-        return response()->json($Recent, 201);
+
     }
 
     public function update($id, Request $request)
     {
         $Recent = Recent::findOrFail($id);
         $Recent->update($request->all());
-
         return response()->json($Recent, 200);
     }
 
