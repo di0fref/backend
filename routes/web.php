@@ -18,8 +18,8 @@ $router->get('/', function () use ($router) {
 });
 
 
-//$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
-$router->group(['prefix' => 'api'], function () use ($router) {
+$router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
+//$router->group(['prefix' => 'api'], function () use ($router) {
 
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
@@ -52,4 +52,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('recents', ['uses' => 'RecentController@create']);
     $router->delete('recents/{id}', ['uses' => 'RecentController@delete']);
     $router->put('recents/{id}', ['uses' => 'RecentController@update']);
+
+//    $router->get('users', ['uses' => 'UserController@showAllNotes']);
+    $router->get('users/{id}', ['uses' => 'UserController@showOneNote']);
+    $router->post('users', ['uses' => 'UserController@create']);
+    $router->post('users/validate', ['uses' => 'UserController@validateUser']);
+    $router->post('users/login', ['uses' => 'UserController@login']);
+    $router->delete('users/{id}', ['uses' => 'UserController@delete']);
+    $router->put('users/{id}', ['uses' => 'UserController@update']);
 });

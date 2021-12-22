@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+
+class UserController extends Controller
+{
+
+    public function login(Request $request)
+    {
+
+        $user = DB::table("users")
+            ->where("username", $request->username)
+//            ->where("password", Hash::make($request->password))
+            ->where("password", $request->password)
+            ->get(["id"])
+            ->first();
+
+        if ($user) {
+
+            $User = User::findOrFail($user->id);
+            $User->update(["token" => Str::random(40)]);
+
+            $ResponseUser = DB::table("users")
+                ->where("id", $user->id)
+                ->get(["id", "token"]);
+
+            return response()->json($ResponseUser);
+        } else {
+            return response()->json("Invalid user", 401);
+        }
+    }
+
+    public function validateUser(Request $request)
+    {
+        $user = DB::table("users")
+            ->where("token", $request->token)
+            ->where("id", $request->id)
+            ->get(["id", "token"])
+            ->first();
+        if ($user) {
+            return response()->json($user);
+        } else {
+            return response()->json("Invalid user", 401);
+        }
+    }
+
+    public function create(Request $request)
+    {
+        $User = User::create($request->all());
+
+        return response()->json($User, 201);
+    }
+
+    public function update($id, Request $request)
+    {
+        $User = User::findOrFail($id);
+        $User->update($request->all());
+
+        return response()->json($User, 200);
+    }
+
+    public function delete($id, \Illuminate\Http\Request $request)
+    {
+        User::findOrFail($id)->delete();
+        return response('Deleted Successfully', 200);
+    }
+}

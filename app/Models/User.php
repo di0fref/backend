@@ -21,7 +21,14 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
     protected $fillable = [
         'id',
         'name',
+        'username',
         'email',
+        'password',
+        'first_name',
+        'last_name',
+        'avatar',
+        'settings',
+        'token'
     ];
 
     /**
@@ -31,6 +38,7 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
      */
     protected $hidden = [
         'password',
+        'username'
     ];
 }
 
