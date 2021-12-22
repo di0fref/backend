@@ -15,13 +15,14 @@ class CreateNotes extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
 
-            $table->increments('id');
+            $table->uuid('id')->primary();
             $table->string('name')->nullable();
             $table->string('folder_id')->default(0);
             $table->text('text')->nullable();
             $table->boolean('bookmark')->default(0);
             $table->boolean('locked')->default(0);
             $table->boolean('deleted')->default(0);
+            $table->string("user_id")->default(null);
             $table->timestamps();
         });
     }

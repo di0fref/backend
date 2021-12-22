@@ -4,7 +4,7 @@ namespace App\Models;
 /* https://auth0.com/blog/developing-restful-apis-with-lumen/ */
 use Illuminate\Database\Eloquent\Model;
 
-class Note extends Model
+class Note extends ModelUuid
 {
     protected $fillable = [
         'name',
@@ -12,6 +12,7 @@ class Note extends Model
         'text',
         'bookmark',
         'locked',
-        'deleted'
+        'deleted',
+        'user_id'
     ];
 }

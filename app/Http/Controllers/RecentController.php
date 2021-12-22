@@ -28,9 +28,10 @@ class RecentController extends Controller
             DB::table("recents")->upsert(
                 [
                     "note_id" => $request->id,
-                    "updated_at" => Carbon::now()
+                    "updated_at" => Carbon::now(),
+                    "user_id" => $request->header("Credentials")
                 ],
-                ["note_id"], ["updated_at" => Carbon::now()]
+                ["note_id", "user_id"], ["updated_at" => Carbon::now()]
             ));
 
 

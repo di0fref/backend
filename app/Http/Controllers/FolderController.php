@@ -9,36 +9,43 @@ use Illuminate\Support\Facades\DB;
 
 class FolderController extends Controller
 {
-    public function showAllFolders()
+    public function showAllFolders(\Illuminate\Http\Request $request)
     {
-        return response()->json(Folder::all());
+        return response()->json(
+
+            DB::table("folders")
+                ->where("user_id", $request->header("Credentials"))
+                ->get()
+        );
     }
 
-    public function parent($id)
+    public function parent($id, \Illuminate\Http\Request $request)
     {
         //"SELECT id, name as label, concat('folder') as type from folders where parent_id = ?",
         return response()->json(
 
             DB::table("folders")
                 ->where("parent_id", $id)
+                ->where("user_id", $request->header("Credentials"))
                 ->get(
                     ["*", DB::raw("concat('folder') as type")])
             );
 
     }
 
-    public function showOneFolder($id)
+    public function showOneFolder($id, \Illuminate\Http\Request $request)
     {
         return response()->json(Folder::find($id));
     }
 
-    public function p($id)
+    public function p($id, \Illuminate\Http\Request $request)
     {
         // SELECT parent_id, name as label, concat('folder') as type from folders where id = ?
         return response()->json(
 
             DB::table("folders")
                 ->where("id", $id)
+                ->where("user_id", $request->header("Credentials"))
                 ->get(["parent_id", "name as label", DB::raw("concat('folder') as type")])
         );
 
