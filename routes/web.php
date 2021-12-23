@@ -61,3 +61,4 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->delete('users/{id}', ['uses' => 'UserController@delete']);
     $router->put('users/{id}', ['uses' => 'UserController@update']);
 });
+    $router->post('api/users/login', ['uses' => 'UserController@login']);

@@ -22,7 +22,7 @@ class CreateUsers extends Migration
             $table->string("last_name");
             $table->string("avatar");
             $table->string("settings");
-            $table->string("token");
+            $table->string("api_token");
             $table->timestamps();
         });
     }

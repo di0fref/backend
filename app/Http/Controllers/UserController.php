@@ -23,33 +23,28 @@ class UserController extends Controller
             ->first();
 
         if ($user) {
-
-            $User = User::findOrFail($user->id);
-            $User->update(["token" => Str::random(40)]);
-
-            $ResponseUser = DB::table("users")
-                ->where("id", $user->id)
-                ->get(["id", "token"]);
-
-            return response()->json($ResponseUser);
+            $u = User::find($user->id);
+            $u->api_token = Str::random(40);
+            $u->save();
+            return response()->json($u);
         } else {
             return response()->json("Invalid user", 401);
         }
     }
 
-    public function validateUser(Request $request)
-    {
-        $user = DB::table("users")
-            ->where("token", $request->token)
-            ->where("id", $request->id)
-            ->get(["id", "token"])
-            ->first();
-        if ($user) {
-            return response()->json($user);
-        } else {
-            return response()->json("Invalid user", 401);
-        }
-    }
+//    public function validateUser(Request $request)
+//    {
+//        $user = DB::table("users")
+//            ->where("token", $request->token)
+//            ->where("id", $request->id)
+//            ->get(["id", "token"])
+//            ->first();
+//        if ($user) {
+//            return response()->json($user);
+//        } else {
+//            return response()->json("Invalid user", 401);
+//        }
+//    }
 
     public function create(Request $request)
     {
