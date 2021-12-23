@@ -28,7 +28,7 @@ class User extends ModelUuid implements AuthenticatableContract, AuthorizableCon
         'last_name',
         'avatar',
         'settings',
-        'token'
+        'api_token'
     ];
 
     /**

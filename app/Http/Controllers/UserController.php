@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,6 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-
         $user = DB::table("users")
             ->where("username", $request->username)
 //            ->where("password", Hash::make($request->password))
@@ -24,28 +24,14 @@ class UserController extends Controller
 
         if ($user) {
             $u = User::find($user->id);
-            $u->api_token = Str::random(40);
+            $u->api_token = "kalle";//Str::random(40);
             $u->save();
             return response()->json($u);
         } else {
             return response()->json("Invalid user", 401);
         }
     }
-
-//    public function validateUser(Request $request)
-//    {
-//        $user = DB::table("users")
-//            ->where("token", $request->token)
-//            ->where("id", $request->id)
-//            ->get(["id", "token"])
-//            ->first();
-//        if ($user) {
-//            return response()->json($user);
-//        } else {
-//            return response()->json("Invalid user", 401);
-//        }
-//    }
-
+//bin2hex(random_bytes(40)
     public function create(Request $request)
     {
         $User = User::create($request->all());

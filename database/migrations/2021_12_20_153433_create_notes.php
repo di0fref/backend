@@ -22,7 +22,7 @@ class CreateNotes extends Migration
             $table->boolean('bookmark')->default(0);
             $table->boolean('locked')->default(0);
             $table->boolean('deleted')->default(0);
-            $table->string("user_id")->default(null);
+            $table->string("user_id")->default(0);
             $table->timestamps();
         });
     }

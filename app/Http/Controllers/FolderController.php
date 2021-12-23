@@ -3,33 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Folder;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class FolderController extends Controller
 {
+
+
     public function showAllFolders(\Illuminate\Http\Request $request)
     {
         return response()->json(
 
             DB::table("folders")
-                ->where("user_id", $request->header("Credentials"))
+                ->where("user_id", Auth::user()->id)
                 ->get()
         );
     }
 
     public function parent($id, \Illuminate\Http\Request $request)
     {
-        //"SELECT id, name as label, concat('folder') as type from folders where parent_id = ?",
         return response()->json(
 
             DB::table("folders")
                 ->where("parent_id", $id)
-                ->where("user_id", $request->header("Credentials"))
+                ->where("user_id", Auth::user()->id)
                 ->get(
                     ["*", DB::raw("concat('folder') as type")])
-            );
+        );
 
     }
 
@@ -45,7 +48,7 @@ class FolderController extends Controller
 
             DB::table("folders")
                 ->where("id", $id)
-                ->where("user_id", $request->header("Credentials"))
+                ->where("user_id", Auth::user()->id)
                 ->get(["parent_id", "name as label", DB::raw("concat('folder') as type")])
         );
 

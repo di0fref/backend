@@ -3,20 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class NoteController extends Controller
 {
+
     public function showAllNotes(\Illuminate\Http\Request $request)
     {
         return response()->json(
 
             DB::table("notes")
                 ->where("deleted", 0)
-                ->where("user_id", $request->header("Credentials"))
+                ->where("user_id", Auth::user()->id)
                 ->get()
+
         );
     }
 
@@ -27,7 +31,7 @@ class NoteController extends Controller
 
             DB::table("notes")
                 ->where("deleted", 1)
-                ->where("user_id", $request->header("Credentials"))
+                ->where("user_id", Auth::user()->id)
                 ->orderBy("name")
                 ->get()
         );
@@ -41,8 +45,8 @@ class NoteController extends Controller
 
             DB::table("notes")
                 ->where("bookmark", 1)
-                ->where("user_id", $request->header("Credentials"))
                 ->where("deleted", 0)
+                ->where("user_id", Auth::user()->id)
                 ->orderBy("name")
                 ->get()
         );
@@ -55,7 +59,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("folder_id", $id)
                 ->where("deleted", 0)
-                ->where("user_id", $request->header("Credentials"))
+                ->where("user_id", Auth::user()->id)
                 ->get(["*", "name as label", DB::raw("concat('note') as type")])
         );
     }
@@ -64,17 +68,25 @@ class NoteController extends Controller
     {
         return response()->json(
             DB::table("notes")
-                ->where("user_id", $request->header("Credentials"))
                 ->where("deleted", 0)
                 ->where("id", $id)
                 ->get()
                 ->first()
+
         );
     }
 
     public function create(Request $request)
     {
-        $Note = Note::create($request->all());
+        $Note = Note::create(
+            [
+                "user_id" => Auth::user()->id,
+                "name" => "",
+                "text" => null
+            ],
+            $request->all()
+        );
+
 
         return response()->json($Note, 201);
     }
