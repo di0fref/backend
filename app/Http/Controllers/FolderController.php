@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class FolderController extends Controller
 {
-
-
     public function showAllFolders(\Illuminate\Http\Request $request)
     {
         return response()->json(
@@ -56,13 +54,23 @@ class FolderController extends Controller
 
     public function create(Request $request)
     {
-        $Folder = Folder::create($request->all());
+        $Folder = Folder::create(
+            [
+                "user_id" => Auth::user()->id,
+                "name" => $request->name,
+                "parent_id" => $request->parent_id
+            ],
+//            $request->all()
+        );
 
         return response()->json($Folder, 201);
     }
 
     public function update($id, Request $request)
     {
+        $f = fopen("/Users/fredrik/tmp/log2.txt", "w+");
+        fwrite($f, print_r($request->all(), true));
+        fclose($f);
         $Folder = Folder::findOrFail($id);
         $Folder->update($request->all());
 

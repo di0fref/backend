@@ -8,29 +8,52 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Google\Auth\AccessToken;
 
 
 class UserController extends Controller
 {
-
     public function login(Request $request)
     {
-        $user = DB::table("users")
-            ->where("username", $request->username)
-//            ->where("password", Hash::make($request->password))
-            ->where("password", $request->password)
-            ->get(["id"])
-            ->first();
+        $idToken = $request->input("idToken");
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=/Users/fredrik/Documents/noteer.json');
 
-        if ($user) {
-            $u = User::find($user->id);
-            $u->api_token = "kalle";//Str::random(40);
-            $u->save();
-            return response()->json($u);
-        } else {
+        $auth = new AccessToken();
+        try {
+            /* Validate idToken */
+            $data = $auth->verify($idToken);
+        } catch (\Exception $e) {
             return response()->json("Invalid user", 401);
         }
+
+        $user_data = $request->input("user");
+        $user = User::find($user_data["uid"]);
+
+        if ($user) {
+            $user->api_token = Str::random(40);
+            $user->save();
+            return response()->json($user);
+
+        } else {
+            /* Create new user */
+            $user = User::create(
+                [
+                    "id" => $user_data["uid"],
+                    "email" => $user_data["email"],
+                    "password" => "",
+                    "username" => $user_data["email"],
+                    "first_name" => $user_data["displayName"],
+                    "last_name" => $user_data["displayName"],
+                    "avatar" => $user_data["photoURL"],
+                    "settings" => "",
+                    "api_token" => Str::random(40)
+                ]
+            );
+
+            return response()->json($user);
+        }
     }
+
 //bin2hex(random_bytes(40)
     public function create(Request $request)
     {

@@ -82,9 +82,9 @@ class NoteController extends Controller
             [
                 "user_id" => Auth::user()->id,
                 "name" => "",
-                "text" => null
+                "text" => null,
+                "folder_id" => $request->folder_id
             ],
-            $request->all()
         );
 
 
