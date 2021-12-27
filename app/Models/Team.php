@@ -4,13 +4,10 @@ namespace App\Models;
 /* https://auth0.com/blog/developing-restful-apis-with-lumen/ */
 use Illuminate\Database\Eloquent\Model;
 
-class Folder extends ModelUuid
+class Team extends ModelUuid
 {
     protected $fillable = [
         'name',
-        'parent_id',
-        'sort_order',
-        'user_id',
-        'team_id'
+        'id',
     ];
 }

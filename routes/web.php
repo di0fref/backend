@@ -23,7 +23,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
 
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
-    $router->get('notes/folder/{id}', ['uses' => 'NoteController@folder']);
+//    $router->get('notes/folder/{id}', ['uses' => 'NoteController@folder']);
     $router->get('notes/trash', ['uses' => 'NoteController@getTrash']);
     /* End Special */
 
@@ -42,8 +42,10 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put('folders/{id}', ['uses' => 'FolderController@update']);
 
     /* Special */
-    $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
-    $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
+//    $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
+//    $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
+    $router->get('tree', ['uses' => 'FolderController@tree']);
+
     /* And Special */
 
 

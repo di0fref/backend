@@ -53,16 +53,16 @@ class NoteController extends Controller
 
     }
 
-    function folder($id, \Illuminate\Http\Request $request)
-    {
-        return response()->json(
-            DB::table("notes")
-                ->where("folder_id", $id)
-                ->where("deleted", 0)
-                ->where("user_id", $request->header("uid"))
-                ->get(["*", "name as label", DB::raw("concat('note') as type")])
-        );
-    }
+//    function folder($id, \Illuminate\Http\Request $request)
+//    {
+//        return response()->json(
+//            DB::table("notes")
+//                ->where("folder_id", $id)
+//                ->where("deleted", 0)
+//                ->where("user_id", $request->header("uid"))
+//                ->get(["*", "name as label", DB::raw("concat('note') as type")])
+//        );
+//    }
 
     public function showOneNote($id, \Illuminate\Http\Request $request)
     {
@@ -84,7 +84,8 @@ class NoteController extends Controller
                 "user_id" => $request->header("uid"),
                 "name" => "",
                 "text" => null,
-                "folder_id" => $request->folder_id
+                "folder_id" => $request->folder_id,
+                "team_id" => ""
             ],
         );
 

@@ -30,9 +30,16 @@ class UserController extends Controller
         $user = User::find($user_data["uid"]);
 
         if ($user) {
+            $teams = DB::table("users_teams")->where("user_id", $request->header("uid"))->get("id");
             $user->api_token = Str::random(40);
             $user->save();
-            return response()->json($user);
+
+            $data = [
+                "user" => $user,
+                "teams" => $teams
+            ];
+
+            return response()->json($data);
 
         } else {
             /* Create new user */

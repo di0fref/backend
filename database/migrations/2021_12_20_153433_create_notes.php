@@ -23,6 +23,7 @@ class CreateNotes extends Migration
             $table->boolean('locked')->default(0);
             $table->boolean('deleted')->default(0);
             $table->string("user_id")->default(0);
+            $table->string("team_id")->default(null);
             $table->timestamps();
         });
     }

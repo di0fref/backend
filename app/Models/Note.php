@@ -13,6 +13,7 @@ class Note extends ModelUuid
         'bookmark',
         'locked',
         'deleted',
-        'user_id'
+        'user_id',
+        'team_id'
     ];
 }
