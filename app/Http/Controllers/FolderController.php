@@ -26,6 +26,7 @@ class FolderController extends Controller
                     $element->items,
                     DB::table("notes")
                         ->where("folder_id", $element->id)
+                        ->where("deleted", 0)
                         ->get(["*",  DB::raw("concat('note') as type")])->toArray());
 
                 $branch[] = $element;
@@ -43,6 +44,7 @@ class FolderController extends Controller
         $notes = DB::table("notes")
             ->get(["*",  DB::raw("concat('note') as type")])
             ->where("folder_id", 0)
+            ->where("deleted", 0)
             ->where("user_id", $request->header("uid"))
 
             ->toArray();
