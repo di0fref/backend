@@ -16,7 +16,7 @@ class FolderController extends Controller
         return response()->json(
 
             DB::table("folders")
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->get()
         );
     }
@@ -27,7 +27,7 @@ class FolderController extends Controller
 
             DB::table("folders")
                 ->where("parent_id", $id)
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->get(
                     ["*", DB::raw("concat('folder') as type")])
         );
@@ -46,7 +46,7 @@ class FolderController extends Controller
 
             DB::table("folders")
                 ->where("id", $id)
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->get(["parent_id", "name as label", DB::raw("concat('folder') as type")])
         );
 
@@ -56,11 +56,10 @@ class FolderController extends Controller
     {
         $Folder = Folder::create(
             [
-                "user_id" => Auth::user()->id,
+                "user_id" => $request->header("uid"),
                 "name" => $request->name,
                 "parent_id" => $request->parent_id
             ],
-//            $request->all()
         );
 
         return response()->json($Folder, 201);
@@ -68,9 +67,6 @@ class FolderController extends Controller
 
     public function update($id, Request $request)
     {
-        $f = fopen("/Users/fredrik/tmp/log2.txt", "w+");
-        fwrite($f, print_r($request->all(), true));
-        fclose($f);
         $Folder = Folder::findOrFail($id);
         $Folder->update($request->all());
 

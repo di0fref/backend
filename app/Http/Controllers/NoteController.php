@@ -18,7 +18,7 @@ class NoteController extends Controller
 
             DB::table("notes")
                 ->where("deleted", 0)
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->get()
 
         );
@@ -31,7 +31,7 @@ class NoteController extends Controller
 
             DB::table("notes")
                 ->where("deleted", 1)
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->orderBy("name")
                 ->get()
         );
@@ -46,7 +46,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("bookmark", 1)
                 ->where("deleted", 0)
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->orderBy("name")
                 ->get()
         );
@@ -59,7 +59,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("folder_id", $id)
                 ->where("deleted", 0)
-                ->where("user_id", Auth::user()->id)
+                ->where("user_id", $request->header("uid"))
                 ->get(["*", "name as label", DB::raw("concat('note') as type")])
         );
     }
@@ -70,6 +70,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("deleted", 0)
                 ->where("id", $id)
+                ->where("user_id", $request->header("uid"))
                 ->get()
                 ->first()
 
@@ -80,7 +81,7 @@ class NoteController extends Controller
     {
         $Note = Note::create(
             [
-                "user_id" => Auth::user()->id,
+                "user_id" => $request->header("uid"),
                 "name" => "",
                 "text" => null,
                 "folder_id" => $request->folder_id
