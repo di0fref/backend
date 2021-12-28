@@ -16,7 +16,6 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $idToken = $request->input("idToken");
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=/Users/fredrik/Documents/noteer.json');
 
         $auth = new AccessToken();
         try {
@@ -30,17 +29,9 @@ class UserController extends Controller
         $user = User::find($user_data["uid"]);
 
         if ($user) {
-            $teams = DB::table("users_teams")->where("user_id", $request->header("uid"))->get("id");
-            $user->api_token = Str::random(40);
+            $user->api_token = User::generateSecureToken(128, 'bits');
             $user->save();
-
-            $data = [
-                "user" => $user,
-                "teams" => $teams
-            ];
-
-            return response()->json($data);
-
+            return response()->json($user);
         } else {
             /* Create new user */
             $user = User::create(
@@ -53,7 +44,7 @@ class UserController extends Controller
                     "last_name" => $user_data["displayName"],
                     "avatar" => $user_data["photoURL"],
                     "settings" => "",
-                    "api_token" => Str::random(40)
+                    "api_token" => User::generateSecureToken(128, 'bits')
                 ]
             );
 

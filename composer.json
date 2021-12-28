@@ -1,18 +1,21 @@
 {
     "name": "laravel/lumen",
     "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "lumen"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
-        "auth0/auth0-php": "^7.0",
         "google/apiclient": "^2.12",
         "google/auth": "^1.18",
         "guzzlehttp/guzzle": "^7.4",
-        "kreait/laravel-firebase": "^3.4",
         "laravel/lumen-framework": "^8.3.1",
-        "phpseclib/phpseclib": "^2.0"
+        "phpseclib/phpseclib": "^2.0",
+        "ext-openssl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

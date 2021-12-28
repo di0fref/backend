@@ -64,4 +64,3 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put('users/{id}', ['uses' => 'UserController@update']);
 });
     $router->post('api/users/login', ['uses' => 'UserController@login']);
-//$router->post('auth/login', ['uses' => 'AuthController@authenticate']);
