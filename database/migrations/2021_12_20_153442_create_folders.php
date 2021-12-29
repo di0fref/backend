@@ -19,7 +19,6 @@ class CreateFolders extends Migration
             $table->string('parent_id')->nullable();
             $table->integer("sort_order")->nullable();
             $table->string("user_id")->default(null);
-            $table->string("team_id")->default(null);
 
             $table->timestamps();
         });

@@ -14,6 +14,5 @@ class Note extends ModelUuid
         'locked',
         'deleted',
         'user_id',
-        'team_id'
     ];
 }

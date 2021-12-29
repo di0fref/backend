@@ -41,8 +41,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->delete('folders/{id}', ['uses' => 'FolderController@delete']);
     $router->put('folders/{id}', ['uses' => 'FolderController@update']);
 
-    /* Special */
-//    $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
+    /* Special */ //    $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
 //    $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
     $router->get('tree', ['uses' => 'FolderController@tree']);
 
@@ -63,4 +62,6 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->delete('users/{id}', ['uses' => 'UserController@delete']);
     $router->put('users/{id}', ['uses' => 'UserController@update']);
 });
-    $router->post('api/users/login', ['uses' => 'UserController@login']);
+$router->post('api/users/login', ['uses' => 'UserController@login']);
+$router->post('api/users/signup', ['uses' => 'UserController@signup']);
+

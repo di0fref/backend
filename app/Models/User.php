@@ -60,7 +60,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             default:
                 return false;
                 break;
-
         }
 
         // Try getting a cryptographically secure token

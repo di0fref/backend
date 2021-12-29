@@ -16,7 +16,6 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $idToken = $request->input("idToken");
-
         $auth = new AccessToken();
         try {
             /* Validate idToken */
@@ -25,8 +24,14 @@ class UserController extends Controller
             return response()->json("Invalid user", 401);
         }
 
+
+
+
         $user_data = $request->input("user");
         $user = User::find($user_data["uid"]);
+
+        $f = fopen("/Users/fref/tmp/log.txt", "w+");
+        fwrite($f, print_r($user_data, true));
 
         if ($user) {
             $user->api_token = User::generateSecureToken(128, 'bits');
@@ -34,25 +39,21 @@ class UserController extends Controller
             return response()->json($user);
         } else {
             /* Create new user */
-            $user = User::create(
-                [
-                    "id" => $user_data["uid"],
-                    "email" => $user_data["email"],
-                    "password" => "",
-                    "username" => $user_data["email"],
-                    "first_name" => $user_data["displayName"],
-                    "last_name" => $user_data["displayName"],
-                    "avatar" => $user_data["photoURL"],
-                    "settings" => "",
-                    "api_token" => User::generateSecureToken(128, 'bits')
-                ]
-            );
+            $user = User::create([
+                "id" => $user_data["uid"],
+                "email" => $user_data["email"],
+                "username" => $user_data["email"],
+                "name" => $user_data["displayName"],
+                "avatar" => $user_data["photoURL"],
+                "settings" => "",
+                "api_token" => User::generateSecureToken(128, 'bits')
+            ]);
 
             return response()->json($user);
         }
+
     }
 
-//bin2hex(random_bytes(40)
     public function create(Request $request)
     {
         $User = User::create($request->all());
