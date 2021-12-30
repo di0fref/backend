@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -28,12 +30,22 @@ class AuthServiceProvider extends ServiceProvider
         // application. The callback which receives the incoming request instance
         // should return either a User instance or null. You're free to obtain
         // the User instance via an API token or any other method necessary.
-        
+
         $this->app['auth']->viaRequest('api', function ($request) {
+
+
+
             $token = $request->header('token');
+            /* Decode token */
+            $token_decoded = User::decodeJWT($token);
+
+            $f = fopen("/Users/fref/tmp/log.txt", "w+");
+            fwrite($f, print_r($token_decoded, true));
+
             if ($token) {
-                return User::where('api_token', $token)->first();
+                return User::where('id', $token_decoded->user->id)->first();
             }
+            return null;
         });
     }
 }

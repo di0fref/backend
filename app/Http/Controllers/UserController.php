@@ -15,26 +15,28 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
+        $f = fopen("/Users/fref/tmp/log_input.txt", "w+");
+        fwrite($f, print_r($request->input(), true));
+
         $idToken = $request->input("idToken");
         $auth = new AccessToken();
         try {
             /* Validate idToken */
             $data = $auth->verify($idToken);
+
+            $f = fopen("/Users/fref/tmp/log_token.txt", "w+");
+            fwrite($f, print_r($data, true));
+
+
         } catch (\Exception $e) {
             return response()->json("Invalid user", 401);
         }
 
-
-
-
         $user_data = $request->input("user");
         $user = User::find($user_data["uid"]);
 
-        $f = fopen("/Users/fref/tmp/log.txt", "w+");
-        fwrite($f, print_r($user_data, true));
-
         if ($user) {
-            $user->api_token = User::generateSecureToken(128, 'bits');
+            $user->api_token = User::encodeJWT($user);
             $user->save();
             return response()->json($user);
         } else {
@@ -46,7 +48,7 @@ class UserController extends Controller
                 "name" => $user_data["displayName"],
                 "avatar" => $user_data["photoURL"],
                 "settings" => "",
-                "api_token" => User::generateSecureToken(128, 'bits')
+                "api_token" => User::encodeJWT($user)
             ]);
 
             return response()->json($user);

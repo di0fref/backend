@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Firebase\JWT\JWK;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -40,43 +43,29 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
         'username'
     ];
-    public static function generateSecureToken($length, $lengthType) {
 
-        // Work out byte length
-        switch($lengthType) {
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
-            case 'bits':
-                $byteLength = ceil($length / 8);
-                break;
+    public static function encodeJWT($user)
+    {
+        $key = "example_key";
+        $payload = array(
+            "iss" => "http://noteer.com",
+            "aud" => "http://noteer.com",
+            "user" => $user
+        );
 
-            case 'bytes':
-                $byteLength = $length;
-                break;
+        $jwt = JWT::encode($payload, $key);
 
-            case 'chars':
-                $byteLength = $length / 2; // In hex one char = 4 bits, i.e. 2 chars per byte
-                break;
+        return $jwt;
+    }
 
-            default:
-                return false;
-                break;
-        }
-
-        // Try getting a cryptographically secure token
-        $token = openssl_random_pseudo_bytes($byteLength);
-
-        if ($token !== false) {
-
-            return bin2hex($token);
-
-        }
-        else {
-
-            // openssl_random_pseudo_bytes failed
-            return false;
-
-        }
-
+    public static function decodeJWT($jwt)
+    {
+        $key = "example_key";
+        return JWT::decode($jwt, $key, ['HS256']);
     }
 }
 

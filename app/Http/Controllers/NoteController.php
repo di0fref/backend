@@ -17,8 +17,8 @@ class NoteController extends Controller
         return response()->json(
 
             DB::table("notes")
-                ->where("deleted", 0)
-                ->where("user_id", $request->header("uid"))
+                ->where("deleted", "0")
+                ->where("user_id", Auth::id())
                 ->get()
 
         );
@@ -30,8 +30,8 @@ class NoteController extends Controller
         return response()->json(
 
             DB::table("notes")
-                ->where("deleted", 1)
-                ->where("user_id", $request->header("uid"))
+                ->where("deleted", "1")
+                ->where("user_id", Auth::id())
                 ->orderBy("name")
                 ->get()
         );
@@ -44,9 +44,9 @@ class NoteController extends Controller
         return response()->json(
 
             DB::table("notes")
-                ->where("bookmark", 1)
-                ->where("deleted", 0)
-                ->where("user_id", $request->header("uid"))
+                ->where("bookmark", "1")
+                ->where("deleted", "0")
+                ->where("user_id", Auth::id())
                 ->orderBy("name")
                 ->get()
         );
@@ -68,9 +68,9 @@ class NoteController extends Controller
     {
         return response()->json(
             DB::table("notes")
-                ->where("deleted", 0)
+                ->where("deleted", "0")
                 ->where("id", $id)
-                ->where("user_id", $request->header("uid"))
+                ->where("user_id", Auth::id())
                 ->get()
                 ->first()
 
@@ -81,8 +81,8 @@ class NoteController extends Controller
     {
         $Note = Note::create(
             [
-                "user_id" => $request->header("uid"),
-                "name" => "",
+                "user_id" => Auth::id(),
+                "name_" => "",
                 "text" => null,
                 "folder_id" => $request->folder_id,
                 "team_id" => ""
