@@ -15,4 +15,10 @@ class Note extends ModelUuid
         'deleted',
         'user_id',
     ];
+
+    protected $casts = [
+        "bookmark" => "boolean",
+        "locked" => "boolean",
+        "deleted" => "boolean"
+    ];
 }

@@ -7,6 +7,7 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Google\Auth\AccessToken;
 
@@ -15,18 +16,11 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
-        $f = fopen("/Users/fref/tmp/log_input.txt", "w+");
-        fwrite($f, print_r($request->input(), true));
-
         $idToken = $request->input("idToken");
         $auth = new AccessToken();
         try {
             /* Validate idToken */
             $data = $auth->verify($idToken);
-
-            $f = fopen("/Users/fref/tmp/log_token.txt", "w+");
-            fwrite($f, print_r($data, true));
-
 
         } catch (\Exception $e) {
             return response()->json("Invalid user", 401);
@@ -48,12 +42,13 @@ class UserController extends Controller
                 "name" => $user_data["displayName"],
                 "avatar" => $user_data["photoURL"],
                 "settings" => "",
-                "api_token" => User::encodeJWT($user)
+                "api_token" => ""
             ]);
+            $user->api_token = User::encodeJWT($user);
+            $user->save();
 
             return response()->json($user);
         }
-
     }
 
     public function create(Request $request)

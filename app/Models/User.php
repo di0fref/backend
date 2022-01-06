@@ -50,21 +50,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public static function encodeJWT($user)
     {
-        $key = "example_key";
+        $key = env("KEY");
+        $signature = env("SIGNATURE");
         $payload = array(
-            "iss" => "http://noteer.com",
-            "aud" => "http://noteer.com",
-            "user" => $user
+            "iss" => "https://noteer.com",
+            "aud" => "https://noteer.com",
+            "user" => $user->id
         );
 
         $jwt = JWT::encode($payload, $key);
-
+        JWT::sign($jwt, $signature);
         return $jwt;
     }
 
     public static function decodeJWT($jwt)
     {
-        $key = "example_key";
+        $key = env("KEY");
         return JWT::decode($jwt, $key, ['HS256']);
     }
 }

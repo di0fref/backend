@@ -23,7 +23,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
 
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
-//    $router->get('notes/folder/{id}', ['uses' => 'NoteController@folder']);
+    $router->post('search', ['uses' => 'NoteController@search']);
     $router->get('notes/trash', ['uses' => 'NoteController@getTrash']);
     /* End Special */
 
@@ -42,17 +42,14 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put('folders/{id}', ['uses' => 'FolderController@update']);
 
     /* Special */ //    $router->get('folders/parent/{id}', ['uses' => 'FolderController@parent']);
-//    $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
+    $router->get('folders/p/{id}', ['uses' => 'FolderController@p']);
     $router->get('tree', ['uses' => 'FolderController@tree']);
 
     /* And Special */
 
 
     $router->get('recents', ['uses' => 'RecentController@showAllRecents']);
-    $router->get('recents/{id}', ['uses' => 'RecentController@showOneRecent']);
     $router->post('recents', ['uses' => 'RecentController@create']);
-    $router->delete('recents/{id}', ['uses' => 'RecentController@delete']);
-    $router->put('recents/{id}', ['uses' => 'RecentController@update']);
 
 //    $router->get('users', ['uses' => 'UserController@showAllNotes']);
     $router->get('users/{id}', ['uses' => 'UserController@showOneNote']);

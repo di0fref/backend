@@ -20,7 +20,7 @@ class CreateUsers extends Migration
             $table->string("name");
             $table->string("avatar")->nullable();
             $table->string("settings")->nullable();
-            $table->string("api_token")->nullable();
+            $table->text("api_token")->nullable();
             $table->timestamps();
         });
     }

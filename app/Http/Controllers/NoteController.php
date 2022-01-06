@@ -12,12 +12,29 @@ use Illuminate\Support\Facades\DB;
 class NoteController extends Controller
 {
 
+    public function search(\Illuminate\Http\Request $request)
+    {
+        $term = $request->input("term");
+
+        return response()->json(
+
+            Note::where("notes.deleted", "0")
+                ->where("notes.user_id", Auth::id())
+                ->where(function ($query) use ($term) {
+                    $query->where("notes.name", "like", "%" . $term . "%")
+                        ->orWhere("notes.text", "like", "%" . $term . "%");
+                })
+                ->leftJoin("folders", "notes.folder_id", "=", "folders.id")
+                ->get(["text", "notes.name as name", "folders.name as folder_name", "notes.id as note_id", "folders.id as folder_id", "locked", "bookmark"])
+
+        );
+    }
+
     public function showAllNotes(\Illuminate\Http\Request $request)
     {
         return response()->json(
 
-            DB::table("notes")
-                ->where("deleted", "0")
+            Note::where("deleted", "0")
                 ->where("user_id", Auth::id())
                 ->get()
 
@@ -32,7 +49,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("deleted", "1")
                 ->where("user_id", Auth::id())
-                ->orderBy("name")
+                ->orderBy("updated_at")
                 ->get()
         );
 
@@ -43,8 +60,7 @@ class NoteController extends Controller
     {
         return response()->json(
 
-            DB::table("notes")
-                ->where("bookmark", "1")
+           Note::where("bookmark", "1")
                 ->where("deleted", "0")
                 ->where("user_id", Auth::id())
                 ->orderBy("name")
@@ -67,8 +83,7 @@ class NoteController extends Controller
     public function showOneNote($id, \Illuminate\Http\Request $request)
     {
         return response()->json(
-            DB::table("notes")
-                ->where("deleted", "0")
+           Note::where("deleted", "0")
                 ->where("id", $id)
                 ->where("user_id", Auth::id())
                 ->get()
