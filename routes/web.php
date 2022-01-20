@@ -33,6 +33,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->post('notes', ['uses' => 'NoteController@create']);
     $router->delete('notes/{id}', ['uses' => 'NoteController@delete']);
     $router->put('notes/{id}', ['uses' => 'NoteController@update']);
+    $router->get("notes/folder/{id}", ["uses" => "NoteController@showAllNotesInFolder"]);
 
 
     $router->get('folders', ['uses' => 'FolderController@showAllFolders']);

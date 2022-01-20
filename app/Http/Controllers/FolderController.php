@@ -23,15 +23,16 @@ class FolderController extends Controller
                 }else{
                     $element->items = [];
                 }
-                $element->items = array_merge(
-                    $element->items,
-                    Note::where("folder_id", $element->id)
-                        ->where("deleted", "0")
-                        ->where("user_id", Auth::id())
-                        ->orderBy("name")
-                        ->get(["*",  DB::raw("concat('note') as type")])
-                        ->toArray());
-
+//                $element->items = array_merge(
+//                    Note::where("folder_id", $element->id)
+//                        ->where("deleted", "0")
+//                        ->where("user_id", Auth::id())
+//                        ->orderBy("name")
+//                        ->get(["*",  DB::raw("concat('note') as type")])
+//                        ->toArray()
+//                    ,$element->items);
+//
+//
                 $branch[] = $element;
             }
         }
@@ -46,25 +47,24 @@ class FolderController extends Controller
         $tree = $this->buildTree($folders);
 
 
-        $notes = Note::where("folder_id", "0")
-            ->where("deleted", "0")
-            ->where("user_id", Auth::id())
-            ->orderBy("name")
-            ->get(["*", DB::raw("concat('note') as type")])
-            ->toArray();
+//        $notes = Note::where("folder_id", "0")
+//            ->where("deleted", "0")
+//            ->where("user_id", Auth::id())
+//            ->orderBy("name")
+//            ->get(["*", DB::raw("concat('note') as type")])
+//            ->toArray();
 
-        $data = array_merge($tree, $notes);
+//        $data = array_merge($notes, $tree);
 
 
-        return response()->json($data);
+        return response()->json($tree);
     }
 
     public function showAllFolders(\Illuminate\Http\Request $request)
     {
         return response()->json(
 
-            Folder::where("user_id", Auth::id())
-                ->get()
+            Folder::where("user_id", Auth::id())->get()
         );
     }
 

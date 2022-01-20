@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Folder;
 use App\Models\Note;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,6 +42,24 @@ class NoteController extends Controller
         );
     }
 
+    public function showAllNotesInFolder($id, \Illuminate\Http\Request $request)
+    {
+        $notes = Note::where("deleted", "0")
+            ->where("user_id", Auth::id())
+            ->where("folder_id", $id)
+            ->get();
+
+        $folder = Folder::where("id", $id)->get(["id", "name", "parent_id"])->first();
+
+        $response = array(
+            "notes" => $notes,
+            "folder" => $folder
+        );
+
+        return response()->json(
+            $response
+        );
+    }
 
     public function getTrash(\Illuminate\Http\Request $request)
     {
@@ -60,7 +79,7 @@ class NoteController extends Controller
     {
         return response()->json(
 
-           Note::where("bookmark", "1")
+            Note::where("bookmark", "1")
                 ->where("deleted", "0")
                 ->where("user_id", Auth::id())
                 ->orderBy("name")
@@ -83,7 +102,7 @@ class NoteController extends Controller
     public function showOneNote($id, \Illuminate\Http\Request $request)
     {
         return response()->json(
-           Note::where("deleted", "0")
+            Note::where("deleted", "0")
                 ->where("id", $id)
                 ->where("user_id", Auth::id())
                 ->get()
