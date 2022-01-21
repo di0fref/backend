@@ -38,7 +38,7 @@ class AuthServiceProvider extends ServiceProvider
             $token_decoded = User::decodeJWT($token);
 
             if ($token) {
-                return User::where('id', "tCl7drll5xaGLyG9O0trQ1WaEJg1")->first();
+                return User::where('id', $token_decoded->user)->first();
             }
             return null;
         });

@@ -23,6 +23,13 @@ class FolderController extends Controller
                 }else{
                     $element->items = [];
                 }
+                  $count = Note::where("folder_id", $element->id)
+                        ->where("deleted", "0")
+                        ->where("user_id", Auth::id())
+                        ->count();
+
+                $element->doc_count = $count;
+
 //                $element->items = array_merge(
 //                    Note::where("folder_id", $element->id)
 //                        ->where("deleted", "0")
