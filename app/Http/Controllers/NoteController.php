@@ -37,6 +37,7 @@ class NoteController extends Controller
 
             Note::where("deleted", "0")
                 ->where("user_id", Auth::id())
+                ->orderBy("updated_at", "desc")
                 ->get()
 
         );
@@ -47,6 +48,7 @@ class NoteController extends Controller
         $notes = Note::where("deleted", "0")
             ->where("user_id", Auth::id())
             ->where("folder_id", $id)
+            ->orderBy("updated_at", "desc")
             ->get();
 
         $folder = Folder::where("id", $id)->get(["id", "name", "parent_id"])->first();
@@ -68,7 +70,7 @@ class NoteController extends Controller
             DB::table("notes")
                 ->where("deleted", "1")
                 ->where("user_id", Auth::id())
-                ->orderBy("updated_at")
+                ->orderBy("updated_at", "desc")
                 ->get()
         );
 
