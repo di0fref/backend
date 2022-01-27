@@ -38,8 +38,6 @@ class FolderController extends Controller
 //                        ->get(["*",  DB::raw("concat('note') as type")])
 //                        ->toArray()
 //                    ,$element->items);
-//
-//
                 $branch[] = $element;
             }
         }
@@ -54,14 +52,14 @@ class FolderController extends Controller
         $tree = $this->buildTree($folders);
 
 
-//        $notes = Note::where("folder_id", "0")
-//            ->where("deleted", "0")
-//            ->where("user_id", Auth::id())
-//            ->orderBy("name")
-//            ->get(["*", DB::raw("concat('note') as type")])
-//            ->toArray();
+        $notes = Note::where("folder_id", "0")
+            ->where("deleted", "0")
+            ->where("user_id", Auth::id())
+            ->orderBy("name")
+            ->get(["*", DB::raw("concat('note') as type")])
+            ->toArray();
 
-//        $data = array_merge($notes, $tree);
+        $data = array_merge($notes, $tree);
 
 
         return response()->json($tree);

@@ -51,8 +51,16 @@ class NoteController extends Controller
             ->orderBy("updated_at", "desc")
             ->get();
 
-        $folder = Folder::where("id", $id)->get(["id", "name", "parent_id"])->first();
-
+        if($id) {
+            $folder = Folder::where("id", $id)->get(["id", "name", "parent_id"])->first();
+        }
+        else{
+            $folder = [
+                "name" => "Documents",
+                "id" => 0,
+                "parent_id" => 0
+            ];
+        }
         $response = array(
             "notes" => $notes,
             "folder" => $folder
