@@ -14,7 +14,7 @@ class CreateFolders extends Migration
     public function up()
     {
         Schema::create('folders', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('name')->nullable();
             $table->string('parent_id')->nullable();
             $table->integer("sort_order")->nullable();

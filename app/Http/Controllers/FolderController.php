@@ -5,62 +5,41 @@ namespace App\Http\Controllers;
 use App\Models\Folder;
 use App\Models\Note;
 use App\Models\User;
+use Google\Service\Keep\Resource\Notes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\String\b;
 
 
 class FolderController extends Controller
 {
-    public function buildTree( $elements, $parentId = 0) {
+    public function buildTree($elements, $parentId = 0)
+    {
         $branch = array();
 
         foreach ($elements as $element) {
-            if ($element->parent_id == $parentId) {
-                $children = $this->buildTree($elements, $element->id);
+            if ($element["parent_id"] == $parentId) {
+                $children = $this->buildTree($elements, $element["id"]);
                 if ($children) {
-                    $element->items = $children;
-                }else{
-                    $element->items = [];
+                    $element["items"] = $children;
+                } else {
+                    $element["items"] = [];
                 }
-                  $count = Note::where("folder_id", $element->id)
-                        ->where("deleted", "0")
-                        ->where("user_id", Auth::id())
-                        ->count();
-
-                $element->doc_count = $count;
-
-//                $element->items = array_merge(
-//                    Note::where("folder_id", $element->id)
-//                        ->where("deleted", "0")
-//                        ->where("user_id", Auth::id())
-//                        ->orderBy("name")
-//                        ->get(["*",  DB::raw("concat('note') as type")])
-//                        ->toArray()
-//                    ,$element->items);
-                $branch[] = $element;
+                $branch[$element["id"]] = $element;
             }
         }
         return $branch;
     }
 
+
     public function tree(\Illuminate\Http\Request $request)
     {
         $folders = Folder::where("user_id", Auth::id())
             ->orderBy("name")
-            ->get(["*",  DB::raw("concat('folder') as type")]);
+            ->get()->keyBy("id")->toArray();
+
         $tree = $this->buildTree($folders);
-
-
-        $notes = Note::where("folder_id", "0")
-            ->where("deleted", "0")
-            ->where("user_id", Auth::id())
-            ->orderBy("name")
-            ->get(["*", DB::raw("concat('note') as type")])
-            ->toArray();
-
-        $data = array_merge($notes, $tree);
-
 
         return response()->json($tree);
     }
@@ -76,8 +55,32 @@ class FolderController extends Controller
 
     public function showOneFolder($id, \Illuminate\Http\Request $request)
     {
-        return response()->json(Folder::find($id));
+        switch ($id) {
+            case 0:
+                return response()->json([
+                    "name" => "Document",
+                    "id" => 0
+                ]);
+            case "bookmarks":
+                return response()->json([
+                    "name" => "Bookmarks",
+                    "id" => "bookmarks"
+                ]);
+            case "tags":
+                return response()->json([
+                    "name" => "Tags",
+                    "id" => "tags"
+                ]);
+            case "recent":
+                return response()->json([
+                    "name" => "Recent",
+                    "id" => "recent"
+                ]);
+            default:
+                return response()->json(Folder::find($id));
+        }
     }
+
     public function create(Request $request)
     {
         $Folder = Folder::create(
@@ -90,17 +93,19 @@ class FolderController extends Controller
 
         return response()->json($Folder, 201);
     }
+
     public function p($id, \Illuminate\Http\Request $request)
     {
         // SELECT parent_id, name as label, concat('folder') as type from folders where id = ?
         return response()->json(
 
-           Folder::where("id", $id)
+            Folder::where("id", $id)
                 ->where("user_id", Auth::id(),)
                 ->get(["parent_id", "name as label", DB::raw("concat('folder') as type")])
         );
 
     }
+
     public function update($id, Request $request)
     {
         $Folder = Folder::findOrFail($id);

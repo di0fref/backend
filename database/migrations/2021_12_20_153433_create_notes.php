@@ -15,7 +15,7 @@ class CreateNotes extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
 
-            $table->uuid('id')->primary();
+            $table->id();
             $table->string('name')->nullable();
             $table->string('folder_id')->default(0);
             $table->text('text')->nullable();

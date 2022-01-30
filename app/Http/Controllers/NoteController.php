@@ -45,30 +45,15 @@ class NoteController extends Controller
 
     public function showAllNotesInFolder($id, \Illuminate\Http\Request $request)
     {
-        $notes = Note::where("deleted", "0")
-            ->where("user_id", Auth::id())
-            ->where("folder_id", $id)
-            ->orderBy("updated_at", "desc")
-            ->get();
-
-        if($id) {
-            $folder = Folder::where("id", $id)->get(["id", "name", "parent_id"])->first();
-        }
-        else{
-            $folder = [
-                "name" => "Documents",
-                "id" => 0,
-                "parent_id" => 0
-            ];
-        }
-        $response = array(
-            "notes" => $notes,
-            "folder" => $folder
-        );
-
         return response()->json(
-            $response
+
+            Note::where("deleted", "0")
+                ->where("user_id", Auth::id())
+                ->where("folder_id", $id)
+                ->orderBy("updated_at", "desc")
+                ->get()
         );
+
     }
 
     public function getTrash(\Illuminate\Http\Request $request)
