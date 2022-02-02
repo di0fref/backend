@@ -35,8 +35,7 @@ class NoteController extends Controller
     {
         return response()->json(
 
-            Note::where("deleted", "0")
-                ->where("user_id", Auth::id())
+            Note::where("user_id", Auth::id())
                 ->orderBy("updated_at", "desc")
                 ->get()
 
@@ -47,11 +46,12 @@ class NoteController extends Controller
     {
         return response()->json(
 
-            Note::where("deleted", "0")
-                ->where("user_id", Auth::id())
-                ->where("folder_id", $id)
+            Note::where("user_id", Auth::id())
+               ->where("folder_id", $id)
                 ->orderBy("updated_at", "desc")
                 ->get()
+
+
         );
 
     }
