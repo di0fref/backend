@@ -17,9 +17,11 @@ class CreateNotes extends Migration
 
             $table->id();
             $table->string('name')->nullable();
-            $table->string('folder_id')->default(0);
+            $table->integer('folder_id')->default(0);
             $table->text('text')->nullable();
             $table->boolean('bookmark')->default(0);
+            $table->boolean('public')->default(0);
+            $table->string('public_link')->nullable();
             $table->boolean('locked')->default(0);
             $table->boolean('deleted')->default(0);
             $table->string("user_id")->default(0);

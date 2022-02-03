@@ -55,11 +55,9 @@ class FolderController extends Controller
 
     public function showOneFolder($id, \Illuminate\Http\Request $request)
     {
-        $f = fopen("/Users/fref/tmp/idlog.txt", "a+");
-        fwrite($f, print_r($id, true));
-
         switch ($id) {
             case "0":
+            case "documents":
                 return response()->json([
                     "name" => "Document",
                     "id" => 0

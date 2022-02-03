@@ -102,10 +102,16 @@ class NoteController extends Controller
                 ->where("user_id", Auth::id())
                 ->get()
                 ->first()
-
         );
     }
-
+    public function showOneSharedNote($id, \Illuminate\Http\Request $request)
+    {
+        return response()->json(
+            Note::where("id", $id)
+                ->get()
+                ->first()
+        );
+    }
     public function create(Request $request)
     {
         $Note = Note::create(

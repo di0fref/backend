@@ -14,6 +14,7 @@ class Note extends Model
         'locked',
         'deleted',
         'user_id',
+        'public'
     ];
 
     protected $casts = [
