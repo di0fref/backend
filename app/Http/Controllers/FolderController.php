@@ -26,7 +26,7 @@ class FolderController extends Controller
                 } else {
                     $element["items"] = [];
                 }
-                $branch[$element["id"]] = $element;
+                $branch[] = $element;
             }
         }
         return $branch;
@@ -37,7 +37,7 @@ class FolderController extends Controller
     {
         $folders = Folder::where("user_id", Auth::id())
             ->orderBy("name")
-            ->get()->keyBy("id")->toArray();
+            ->get();
 
         $tree = $this->buildTree($folders);
 
@@ -55,8 +55,11 @@ class FolderController extends Controller
 
     public function showOneFolder($id, \Illuminate\Http\Request $request)
     {
+        $f = fopen("/Users/fref/tmp/idlog.txt", "a+");
+        fwrite($f, print_r($id, true));
+
         switch ($id) {
-            case 0:
+            case "0":
                 return response()->json([
                     "name" => "Document",
                     "id" => 0
