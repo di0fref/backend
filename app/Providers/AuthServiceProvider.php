@@ -33,13 +33,15 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->viaRequest('api', function ($request) {
 
-//            $token = $request->header('token');
-//            /* Decode token */
-//            $token_decoded = User::decodeJWT($token);
+            $token = $request->header('token');
+            /* Decode token */
+            $token_decoded = User::decodeJWT($token);
 
-//            if ($token) {
-                return User::where('id', "tCl7drll5xaGLyG9O0trQ1WaEJg1")->first();
-//            }
+            if ($token) {
+//                return User::where('id', "tCl7drll5xaGLyG9O0trQ1WaEJg1")->first();
+                return User::where('id', $token_decoded->user)->first();
+
+            }
             return null;
         });
     }

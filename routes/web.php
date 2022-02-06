@@ -61,7 +61,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put('users/{id}', ['uses' => 'UserController@update']);
 });
 $router->post('api/users/login', ['uses' => 'UserController@login']);
-$router->post('api/users/signup', ['uses' => 'UserController@signup']);
+$router->post('api/users/signup', ['uses' => 'UserController@login']);
 $router->get('api/notes/shared/{id}', ['uses' => 'NoteController@showOneSharedNote']);
 
 

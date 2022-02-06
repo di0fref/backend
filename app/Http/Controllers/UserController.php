@@ -25,7 +25,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json("Invalid user", 401);
         }
-
         $user_data = $request->input("user");
         $user = User::find($user_data["uid"]);
 
@@ -39,10 +38,8 @@ class UserController extends Controller
                 "id" => $user_data["uid"],
                 "email" => $user_data["email"],
                 "username" => $user_data["email"],
-                "name" => $user_data["displayName"],
-                "avatar" => $user_data["photoURL"],
-                "settings" => "",
-                "api_token" => ""
+                "name" => $user_data["displayName"] ?? "",
+                "avatar" => $user_data["photoURL"] ?? "",
             ]);
             $user->api_token = User::encodeJWT($user);
             $user->save();
