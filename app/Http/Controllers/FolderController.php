@@ -20,12 +20,31 @@ class FolderController extends Controller
 
         foreach ($elements as $element) {
             if ($element["parent_id"] == $parentId) {
+                $element["documents"] = [];
                 $children = $this->buildTree($elements, $element["id"]);
                 if ($children) {
                     $element["items"] = $children;
                 } else {
                     $element["items"] = [];
                 }
+
+//                $element["items"] = array_merge(
+//                    $element["items"],
+//                    Note::where("folder_id", $element["id"])
+//                        ->where("deleted", "0")
+//                        ->where("user_id", Auth::id())
+//                        ->orderBy("name")
+//                        ->get(["*",  DB::raw("concat('note') as type")])
+//                        ->toArray()
+//                );
+//                $element["documents"] =
+//                    Note::where("folder_id", $element["id"])
+//                        ->where("deleted", "0")
+//                        ->where("user_id", Auth::id())
+//                        ->orderBy("name")
+//                        ->get(["*",  DB::raw("concat('note') as type")])
+//                        ->toArray();
+
                 $branch[] = $element;
             }
         }
@@ -37,7 +56,7 @@ class FolderController extends Controller
     {
         $folders = Folder::where("user_id", Auth::id())
             ->orderBy("name")
-            ->get();
+            ->get()->toArray();
 
         $tree = $this->buildTree($folders);
 
@@ -86,6 +105,11 @@ class FolderController extends Controller
                 return response()->json([
                     "name" => "Shared",
                     "id" => "shared"
+                ]);
+            case "todos":
+                return response()->json([
+                    "name" => "Todos",
+                    "id" => "todos"
                 ]);
             default:
                 return response()->json(Folder::find($id));
