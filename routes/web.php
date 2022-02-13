@@ -26,6 +26,11 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->put("tasks/{id}", ["uses" => "TaskController@update"]);
     $router->post("tasks", ["uses" => "TaskController@create"]);
 
+    $router->get("tasklists", ["uses" => "TaskListController@getAll"]);
+    $router->put("tasklists/{id}", ["uses" => "TaskListController@update"]);
+    $router->post("tasklists", ["uses" => "TaskListController@create"]);
+
+
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
     $router->post('search', ['uses' => 'NoteController@search']);

@@ -16,7 +16,7 @@ class CreateTaskLists extends Migration
         Schema::create('task_lists', function (Blueprint $table) {
 
             $table->id();
-            $table->string('name')->nullable();
+            $table->text('name')->nullable();
             $table->text('text')->nullable();
             $table->boolean('deleted')->default(0);
             $table->string("user_id")->default(0);

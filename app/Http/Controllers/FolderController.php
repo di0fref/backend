@@ -107,9 +107,10 @@ class FolderController extends Controller
                     "id" => "shared"
                 ]);
             case "todos":
+            case "tasks":
                 return response()->json([
-                    "name" => "Todos",
-                    "id" => "todos"
+                    "name" => "Tasks",
+                    "id" => "tasks"
                 ]);
             default:
                 return response()->json(Folder::find($id));
