@@ -21,6 +21,11 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
 //$router->group(['prefix' => 'api'], function () use ($router) {
 
+
+    $router->get("tasks", ["uses" => "TaskController@getAll"]);
+    $router->put("tasks/{id}", ["uses" => "TaskController@update"]);
+    $router->post("tasks", ["uses" => "TaskController@create"]);
+
     /* Special */
     $router->get('notes/bookmarks', ['uses' => 'NoteController@bookmarks']);
     $router->post('search', ['uses' => 'NoteController@search']);

@@ -78,7 +78,7 @@ class FolderController extends Controller
             case "0":
             case "documents":
                 return response()->json([
-                    "name" => "Document",
+                    "name" => "Documents",
                     "id" => 0
                 ]);
             case "bookmarks":
