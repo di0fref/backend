@@ -18,10 +18,12 @@ class CreateTasks extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->text('text')->nullable();
+            $table->date("due")->nullable()->default(null);
             $table->boolean('deleted')->default(0);
             $table->boolean("completed")->default(false);
             $table->string("user_id")->default(0);
             $table->integer("task_list_id")->default(0);
+            $table->integer("order")->default(0)->nullable();;
             $table->timestamps();
         });
     }

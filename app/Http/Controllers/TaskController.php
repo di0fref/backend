@@ -13,7 +13,9 @@ class TaskController extends Controller
 
         foreach ($tasksLists as $tasksList) {
             $tasksList->todos = Task::where("user_id", Auth::id())
-                ->where("task_list_id", $tasksList->id)->get();
+                ->where("task_list_id", $tasksList->id)
+                ->orderBy("order", "asc")
+                ->get();
         }
 
         return response()->json(
@@ -29,6 +31,7 @@ class TaskController extends Controller
                 "name_" => "",//$request->text,
                 "text" => $request->text,
                 "task_list_id" => $request->task_list_id,
+                "due" => $request->due
             ],
         );
         return response()->json($task, 201);

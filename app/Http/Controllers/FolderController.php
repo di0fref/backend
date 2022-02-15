@@ -77,6 +77,7 @@ class FolderController extends Controller
         switch ($id) {
             case "0":
             case "documents":
+            case "docs":
                 return response()->json([
                     "name" => "Documents",
                     "id" => 0

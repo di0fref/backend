@@ -20,6 +20,7 @@ class CreateTaskLists extends Migration
             $table->text('text')->nullable();
             $table->boolean('deleted')->default(0);
             $table->string("user_id")->default(0);
+            $table->integer("order")->default(0)->nullable();;
             $table->timestamps();
         });
     }

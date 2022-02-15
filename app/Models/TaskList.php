@@ -11,6 +11,7 @@ class TaskList extends Model
         'text',
         'deleted',
         'user_id',
+        "order"
     ];
 
     protected $casts = [
