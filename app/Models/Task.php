@@ -12,9 +12,10 @@ class Task extends Model
         'completed',
         'deleted',
         'user_id',
-        'task_list_id',
         'due',
-        "order"
+        "order",
+        "type",
+        "prio"
     ];
 
     protected $casts = [

@@ -25,6 +25,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
     $router->get("tasks", ["uses" => "TaskController@getAll"]);
     $router->put("tasks/{id}", ["uses" => "TaskController@update"]);
     $router->post("tasks", ["uses" => "TaskController@create"]);
+    $router->delete("tasks/{id}", ["uses" => "TaskController@delete"]);
 
     $router->get("tasklists", ["uses" => "TaskListController@getAll"]);
     $router->put("tasklists/{id}", ["uses" => "TaskListController@update"]);
