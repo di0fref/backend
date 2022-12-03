@@ -4,7 +4,7 @@ namespace App\Models;
 /* https://auth0.com/blog/developing-restful-apis-with-lumen/ */
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Task extends ModelUuid
 {
     protected $fillable = [
         'name',
@@ -15,7 +15,8 @@ class Task extends Model
         'due',
         "order",
         "type",
-        "prio"
+        "prio",
+        "project_id"
     ];
 
     protected $casts = [

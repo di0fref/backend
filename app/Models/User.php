@@ -53,8 +53,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $key = env("KEY");
         $signature = env("SIGNATURE");
         $payload = array(
-            "iss" => "https://noteer.com",
-            "aud" => "https://noteer.com",
+            "iss" => "https://done.com",
+            "aud" => "https://done.com",
             "user" => $user->id
         );
 

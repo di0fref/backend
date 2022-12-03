@@ -111,6 +111,7 @@ $app->middleware([
 | can respond to, as well as the controllers that may handle them.
 |
 */
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
