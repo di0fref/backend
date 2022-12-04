@@ -22,6 +22,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($ro
 
     $router->get("tasks", ["uses" => "TaskController@getAll"]);
     $router->post("tasks", ["uses" => "TaskController@create"]);
+    $router->put("tasks/{id}", ["uses" => "TaskController@update"]);
 
     $router->post("projects", ["uses" => "ProjectController@create"]);
     $router->get("projects", ["uses" => "ProjectController@getAll"]);

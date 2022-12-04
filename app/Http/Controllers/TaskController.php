@@ -41,9 +41,9 @@ class TaskController extends Controller
     function update($id, \Illuminate\Http\Request $request)
     {
         $d = $request->all();
-        if (isset($d["due"])) {
-            $d["due"] = empty($d["due"]) ? null : $d["due"];
-        }
+//        if (isset($d["due"])) {
+//            $d["due"] = empty($d["due"]) ? null : $d["due"];
+//        }
         $task = Task::findOrFail($id);
         $task->update($d);
 

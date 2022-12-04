@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Session;
 use App\Models\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -10,10 +11,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Google\Auth\AccessToken;
+use Ramsey\Uuid\Uuid;
 
 
 class UserController extends Controller
 {
+
     public function login(Request $request)
     {
         $idToken = $request->input("idToken");
@@ -27,6 +30,31 @@ class UserController extends Controller
         }
         $user_data = $request->input("user");
         $user = User::find($user_data["uid"]);
+
+//        $session = Session::where("user_id", $user->id)
+//            ->where("ip", User::getIp())
+//            ->where("status", "confirmed")
+//            ->get();
+//
+//        if(empty($session)){
+//            return response()->json([
+//                "status" => "fail",
+//                "reason" => "missing_session",
+//                "session" => $session
+//            ]);
+//        }
+
+        /* Add session */
+        $session = Session::upsert(
+            [
+                "id" => Str::uuid()->toString(),
+                "user_id" => $user_data["uid"],
+                "ip" => User::getIp(),
+                "status" => "pending"
+            ],
+            ["user_id", "ip"],
+            ["ip"]
+        );
 
         if ($user) {
             $user->api_token = User::encodeJWT($user);

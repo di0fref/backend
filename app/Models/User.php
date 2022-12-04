@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
+use Illuminate\Http\Request;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -55,7 +56,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $payload = array(
             "iss" => "https://done.com",
             "aud" => "https://done.com",
-            "user" => $user->id
+            "user" => $user->id,
+            "ip" => self::getIp()
         );
 
         $jwt = JWT::encode($payload, $key);
@@ -67,6 +69,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $key = env("KEY");
         return JWT::decode($jwt, $key, ['HS256']);
+    }
+
+    static function getIp()
+    {
+        $keys = array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR');
+
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $_SERVER) === true) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                    if (filter_var($ip, FILTER_VALIDATE_IP) !== false) {
+                        return $ip;
+                    }
+                }
+            }
+        }
     }
 }
 
